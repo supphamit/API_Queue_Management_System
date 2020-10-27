@@ -31,8 +31,8 @@ public class QueueController {
 
 	@PostMapping(value = "/addqueue")
     public ResponseEntity<?> postQueue(@RequestBody Queue body) {
-        Queue queue = queueService.addQueue(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(queue);
+        queueService.addQueue(body);
+        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
     }
 	
     @GetMapping(value = "/getqueue")
