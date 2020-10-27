@@ -19,4 +19,7 @@ public interface QueueRepository extends JpaRepository<Queue, Integer>{
 	
 	@Query("SELECT r fROM Queue r WHERE r.activeFlag = :activeFlag")
 	public List<Queue> findQueue(@Param("activeFlag") Boolean activeFlag);
+	
+	@Query("SELECT r fROM Queue r WHERE r.name = :name")
+	public List<Queue> findIdByName(@Param("name") String name);
 }

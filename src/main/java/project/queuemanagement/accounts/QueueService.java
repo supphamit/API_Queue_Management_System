@@ -139,4 +139,9 @@ public class QueueService {
 		return queueRepository.findQueue(activeFlag);
 	}
 	
+	
+	public List<Queue> checkNoQueueByName(String name) {
+		return queueRepository.findIdByName(name);
+		
+	}
 }

@@ -84,10 +84,17 @@ public class QueueController {
     	
     }
     
-    @GetMapping(value = "getByFlag")
+    @GetMapping(value = "/getByFlag")
     public List<Queue> getByFlag(@RequestBody Boolean activeFlag) throws Exception{
     	
 		return queueService.getByFlag(activeFlag);
+    	
+    }
+    
+    @PostMapping(value = "/QueueByName")
+	public List<Queue> findIdByname(@RequestBody String name){
+    	System.out.print(name);
+		return queueService.checkNoQueueByName(name);
     	
     }
     }
