@@ -1,5 +1,6 @@
 package project.queuemanagement.accounts;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import project.queuemanagement.accounts.AccountService;
+import java.util.HashMap; // import the HashMap class
 
 @RestController
 
@@ -32,7 +34,7 @@ public class QueueController {
 	@PostMapping(value = "/addqueue")
     public ResponseEntity<?> postQueue(@RequestBody Queue body) {
         queueService.addQueue(body);
-        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 	
     @GetMapping(value = "/getqueue")
@@ -44,11 +46,11 @@ public class QueueController {
     public int getNum() {
         return queueService.countQueues();
     }
-    @PostMapping(value = "/view")          // เหลืออีกกี่คิว
-    public int viewQueue(@RequestBody String name) {
-    	System.out.print(name);
-        return queueService.noQueue(name);
-    }
+//    @PostMapping(value = "/view")          // เหลืออีกกี่คิว
+//    public int viewQueue(@RequestBody String name) {
+//    	System.out.print(name);
+//        return queueService.noQueue(name);
+//    }
     
     
     @PutMapping("/{id}")
@@ -92,9 +94,15 @@ public class QueueController {
     }
     
     @PostMapping(value = "/QueueByName")
-	public List<Queue> findIdByname(@RequestBody String name){
+	public HashMap<String, String> findIdByname(@RequestBody String name){
     	System.out.print(name);
-		return queueService.checkNoQueueByName(name);
+//    	List<String> queues = new ArrayList<>();
+    	HashMap<String, String> queues = new HashMap<String, String>();
+    	
+    	queues.put("userQueue", queueService.checkNoQueueByName(name));
+    	queues.put("waitingQueue", queueService.noQueue(name));
+    	
+		return queues;
     	
     }
     }

@@ -56,9 +56,10 @@ public class QueueService {
 		
 	}
 	
-	public int noQueue(String name) {
+	public String noQueue(String name) {
 		int notest = 0;
 		int count = 0;
+		String ans;
 		// String nameCheck;
 		List<Queue> list = queueRepository.findAll();
 		for (Queue i : list) {
@@ -68,15 +69,16 @@ public class QueueService {
 			}
 		}
 		for (Queue j : list) {
-			if (j.getId() < count && j.getActiveFlag().equals(true)) {
+			if (j.getId() < count && j.getActiveFlag().equals(false)) {
 				notest += 1;
 			}
 
 		}
 		
+		ans = String.valueOf(notest);
 	
 		
-		return notest;
+		return ans;
 		
 	}
 	
@@ -140,8 +142,10 @@ public class QueueService {
 	}
 	
 	
-	public List<Queue> checkNoQueueByName(String name) {
+	public String checkNoQueueByName(String name) {
+
 		return queueRepository.findIdByName(name);
 		
 	}
+	
 }
