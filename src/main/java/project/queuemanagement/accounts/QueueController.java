@@ -95,15 +95,15 @@ public class QueueController {
     
     @PostMapping(value = "/QueueByName")
 	public HashMap<String, String> findIdByname(@RequestBody String name){
-    	System.out.print(name);
+    	System.out.println(name);
 //    	List<String> queues = new ArrayList<>();
     	HashMap<String, String> queues = new HashMap<String, String>();
     	
     	queues.put("userQueue", queueService.checkNoQueueByName(name));
     	queues.put("waitingQueue", queueService.noQueue(name));
-    	
+    	System.out.println(queues);
 		return queues;
     	
     }
-    }
-
+}
+    
