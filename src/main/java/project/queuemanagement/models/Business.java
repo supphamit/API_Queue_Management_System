@@ -12,10 +12,10 @@ import javax.persistence.Table;
 public class Business {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 	
-	@Column(name = "name")
-	private String name;
+	@Column(name = "business_name")
+	private String business_name;
 	
 	@Column(name = "branch")
 	private String branch;
@@ -24,7 +24,7 @@ public class Business {
 	private String description;
 	
 	@Column(name = "telephone")
-	private int telephone;
+	private Integer telephone;
 	
 	@Column(name = "contact")
 	private String contact;
@@ -46,11 +46,11 @@ public class Business {
 		
 	}
 	
-	public Business(int id, String name, String branch, String description, 
-			int telephone, String contact, String address, String open_time, String distance, 
+	public Business(Integer id, String business_name, String branch, String description, 
+			Integer telephone, String contact, String address, String open_time, String distance, 
 			String advance) {
 		this.id = id;
-		this.name = name;
+		this.business_name = business_name;
 		this.branch = branch;
 		this.description = description;
 		this.telephone = telephone;
@@ -62,20 +62,22 @@ public class Business {
 		
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	
+
+	public String getBusiness_name() {
+		return business_name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setBusiness_name(String business_name) {
+		this.business_name = business_name;
 	}
 
 	public String getBranch() {
@@ -94,11 +96,11 @@ public class Business {
 		this.description = description;
 	}
 
-	public int getTelephone() {
+	public Integer getTelephone() {
 		return telephone;
 	}
 
-	public void setTelephone(int telephone) {
+	public void setTelephone(Integer telephone) {
 		this.telephone = telephone;
 	}
 
@@ -141,5 +143,7 @@ public class Business {
 	public void setAdvance(String advance) {
 		this.advance = advance;
 	}
+
+
 	
 }
