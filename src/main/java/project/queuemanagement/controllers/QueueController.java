@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.queuemanagement.models.Queue;
+import project.queuemanagement.payload.response.MessageResponse;
 import project.queuemanagement.service.QueueService;
 
 @RestController
@@ -22,7 +23,7 @@ public class QueueController {
 	@PostMapping(value = "/addQueue")
     public ResponseEntity<?> postQueue(@RequestBody Queue body) {
         queueService.addQueue(body);
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return ResponseEntity.ok(new MessageResponse("successfully"));
     }
 	
 	@PostMapping(value = "/QueueByBusiness")
