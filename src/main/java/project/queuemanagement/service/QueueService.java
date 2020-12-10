@@ -41,6 +41,17 @@ public class QueueService {
         return queueRepository.findQueueStatus(id);
     }
 	
+	public  Integer findAllQueueWait(String business_name, String username) {
+		List<Queue> list = queueRepository.findWatingQueueByBusiness(business_name);
+		int id = queueRepository.findUserQueueDetailByUsername(username).get(0).getId();
+		int allQueue = 0;
+		for (Queue i : list) {															// นับqueue_no แล้ว+1 (Hardcode)
+			if (i.getId() < id){
+				  allQueue += 1;
+			};
+    }
+		return allQueue;
+	}
 	public double waitTime(String business_name, String username) {
 		int ppl = 0;																	// people in line
 		double ppm = 0.06666;															// people served per minute
@@ -61,15 +72,27 @@ public class QueueService {
 		
 	}
 	
-	public  Map<String, Object> findQueueStatusDetail(String business_name, String username) {
+	public  Map<String, Object> findQueueStatusDetail(String username, String business_name) {
 		Map<String, Object> list = new HashMap<String, Object>();
 		Map<String, Object> result = new HashMap<String, Object>();
 		list.put("userQueueDetail", queueRepository.findUserQueueDetailByUsername(username));
 		list.put("curent_Queue", findCurentQueue(business_name));
 		list.put("wait_time", waitTime(business_name, username));
-		
+		list.put("allQueueWait", findAllQueueWait(business_name, username));
 		result.put("QueueDetail" , list);
         return result;
     }
+	
+	public  List<Queue> findListQueue(String username) {
+        return queueRepository.findUserQueueDetailByUsername(username);
+    }
+	
+	public void cancelQueue(String username, String business_name) {
+		queueRepository.cancelQueue(username, business_name);
+	}
+	
+	public void accpetQueue(String username, String business_name) {
+		queueRepository.acceptQueue(username, business_name);
+	}
 }
 

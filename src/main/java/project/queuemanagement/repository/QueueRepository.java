@@ -2,7 +2,10 @@ package project.queuemanagement.repository;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -29,5 +32,13 @@ public interface QueueRepository extends JpaRepository<Queue, Integer>{
 	@Query("SELECT r FROM Queue r WHERE r.status = 'waiting' AND r.username = ?1 AND r.business_name = ?2" )
 	public List<Queue> existsByUsername(String username, String business_name);
 	
+	@Modifying
+	@Transactional
+	@Query("UPDATE Queue SET status = 'cancel'  WHERE username = ?1 AND business_name = ?2" )
+	public void cancelQueue(@Param("username") String username, @Param("business_name") String business_name);
 	
+	@Modifying
+	@Transactional
+	@Query("UPDATE Queue SET status = 'inprocess'  WHERE username = ?1 AND business_name = ?2" )
+	public void acceptQueue(@Param("username") String username, @Param("business_name") String business_name);
 }
