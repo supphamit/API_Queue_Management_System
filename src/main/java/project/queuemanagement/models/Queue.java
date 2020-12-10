@@ -135,7 +135,6 @@ public class Queue {
 		this.business_detail_id = business_detail_id;
 	}
 
-
 	public String getStatus() {
 		return status;
 	}
@@ -150,6 +149,14 @@ public class Queue {
 
 	public void setBusiness_name(String business_name) {
 		this.business_name = business_name;
+	}
+
+	@Override
+	public String toString() {
+		return "Queue [id=" + id + ", username=" + username + ", user_email=" + user_email + ", user_detail="
+				+ user_detail + ", book_time=" + book_time + ", user_telephone=" + user_telephone + ", queue_no="
+				+ queue_no + ", queue_type=" + queue_type + ", business_detail_id=" + business_detail_id + ", status="
+				+ status + ", business_name=" + business_name + "]";
 	}
 
 	

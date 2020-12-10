@@ -15,20 +15,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import project.queuemanagement.models.Queue;
 import project.queuemanagement.payload.response.MessageResponse;
+import project.queuemanagement.repository.QueueRepository;
 import project.queuemanagement.service.QueueService;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@CrossOrigin
 @RequestMapping("/api/queue")
 public class QueueController {
 	@Autowired
 	QueueService queueService;
 	
+	@Autowired
+	private QueueRepository queueRepository;
+	
 	
 	@PostMapping(value = "/addQueue")
     public ResponseEntity<?> postQueue(@RequestBody Queue body) {
+		System.out.println(body.toString());
+		System.out.println(queueRepository.existsByUsername(body.getUsername(), body.getBusiness_name()).size());
+		if (queueRepository.existsByUsername(body.getUsername(), body.getBusiness_name()).size() > 0) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("ชื่อผู้ใช้งานซ้ำ กรุณาเปลี่ยนชื่อผู้ใช้และทำการต่อคิวใมห่อีกครั้ง "));
+		}
         queueService.addQueue(body);
-        return ResponseEntity.ok(new MessageResponse("successfully"));
+        return ResponseEntity.ok(new MessageResponse("ต่อคิวาำเร็จ"));
     }
 	
 	@PostMapping(value = "/queueByBusiness")
@@ -54,10 +65,9 @@ public class QueueController {
     }
 	
 	@GetMapping(value = "/queueStatusDetail")
-    public ResponseEntity<?> queueSatusDetail(@RequestParam("business_name") String business_name, @RequestParam("id") Integer id) {
-		Map<String, Object> result = queueService.findQueueStatusDetail(business_name, id);
+    public ResponseEntity<Map<String, Object>> queueSatusDetail(@RequestParam("business_name") String business_name, @RequestParam("username") String username) {
+		Map<String, Object> result = queueService.findQueueStatusDetail(business_name, username);
 		System.out.println(result);
-		
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 }

@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import project.queuemanagement.models.Queue;
+import project.queuemanagement.payload.response.MessageResponse;
 import project.queuemanagement.repository.QueueRepository;
 @Service
 public class QueueService {
@@ -17,7 +19,6 @@ public class QueueService {
 	
 	
 	public  Queue addQueue(Queue queue) {
-		
 		int count = 0;
 		List<Queue> list = queueRepository.findAll(); 	
 		for (Queue i : list) {								// นับqueue_no แล้ว+1 (Hardcode)
@@ -40,15 +41,15 @@ public class QueueService {
         return queueRepository.findQueueStatus(id);
     }
 	
-	public double waitTime(String business_name, Integer id) {
+	public double waitTime(String business_name, String username) {
 		int ppl = 0;																	// people in line
 		double ppm = 0.06666;															// people served per minute
 		double mow = 0;																	// minutes of waiting
 		List<Queue> list = queueRepository.findWatingQueueByBusiness(business_name);
+		int id = queueRepository.findUserQueueDetailByUsername(username).get(0).getId();
 		System.out.println("business_name");
 		System.out.println(business_name);
-		System.out.println("id");
-		System.out.println(id);
+		System.out.println("id " + id);
 		System.out.println(queueRepository.findWatingQueueByBusiness(business_name));
 		for (Queue i : list) {															// นับqueue_no แล้ว+1 (Hardcode)
 			if (i.getId() < id){
@@ -56,14 +57,18 @@ public class QueueService {
 			};
 		}
 		mow = ppl/ppm;
-		return mow;
+		return Math.round(mow);
 		
 	}
 	
-	public  Map<String, Object> findQueueStatusDetail(String business_name, Integer id) {
+	public  Map<String, Object> findQueueStatusDetail(String business_name, String username) {
+		Map<String, Object> list = new HashMap<String, Object>();
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("curent_Queue", findCurentQueue(business_name));
-		result.put("wait_time", waitTime(business_name, id));
+		list.put("userQueueDetail", queueRepository.findUserQueueDetailByUsername(username));
+		list.put("curent_Queue", findCurentQueue(business_name));
+		list.put("wait_time", waitTime(business_name, username));
+		
+		result.put("QueueDetail" , list);
         return result;
     }
 }
