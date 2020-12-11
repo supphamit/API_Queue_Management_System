@@ -1,5 +1,6 @@
 package project.queuemanagement.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import project.queuemanagement.dto.QueueDto;
 import project.queuemanagement.models.Queue;
 import project.queuemanagement.payload.response.MessageResponse;
 import project.queuemanagement.repository.QueueRepository;
@@ -49,18 +51,29 @@ public class QueueService {
 			if (i.getId() < id){
 				  allQueue += 1;
 			};
-    }
+		}
 		return allQueue;
 	}
+	
+	public  Map<String, Object> findWatingQueueByBusiness(String business_name, String username) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> list = new HashMap<String, Object>();
+		list.put(business_name, findAllQueueWait(business_name, username));
+//		list.put("allQueueWait", findAllQueueWait(business_name, username));
+		result.put("allQueue" , list);
+        return result;
+    }
+	
+	
 	public double waitTime(String business_name, String username) {
 		int ppl = 0;																	// people in line
 		double ppm = 0.06666;															// people served per minute
 		double mow = 0;																	// minutes of waiting
 		List<Queue> list = queueRepository.findWatingQueueByBusiness(business_name);
 		int id = queueRepository.findUserQueueDetailByUsername(username).get(0).getId();
-		System.out.println("business_name");
-		System.out.println(business_name);
-		System.out.println("id " + id);
+//		System.out.println("business_name");
+//		System.out.println(business_name);
+//		System.out.println("id " + id);
 		System.out.println(queueRepository.findWatingQueueByBusiness(business_name));
 		for (Queue i : list) {															// นับqueue_no แล้ว+1 (Hardcode)
 			if (i.getId() < id){
@@ -75,6 +88,7 @@ public class QueueService {
 	public  Map<String, Object> findQueueStatusDetail(String username, String business_name) {
 		Map<String, Object> list = new HashMap<String, Object>();
 		Map<String, Object> result = new HashMap<String, Object>();
+		
 		list.put("userQueueDetail", queueRepository.findUserQueueDetailByUsername(username));
 		list.put("curent_Queue", findCurentQueue(business_name));
 		list.put("wait_time", waitTime(business_name, username));
@@ -83,8 +97,11 @@ public class QueueService {
         return result;
     }
 	
-	public  List<Queue> findListQueue(String username) {
-        return queueRepository.findUserQueueDetailByUsername(username);
+	public  Map<String, Object> findListQueue(String username) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("listQueue", queueRepository.findUserQueueDetailByUsername(username));
+		
+        return result;
     }
 	
 	public void cancelQueue(String username, String business_name) {
@@ -94,5 +111,41 @@ public class QueueService {
 	public void accpetQueue(String username, String business_name) {
 		queueRepository.acceptQueue(username, business_name);
 	}
+	
+	public  Map<String, Object> checkQueueWithLoginUsername(String username) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		ArrayList<QueueDto> list = new ArrayList<QueueDto>();
+//		Map<String, Object> list = new HashMap<String, Object>();
+		Map<Object, Integer> waitQueueList = new HashMap<Object, Integer>();
+		List<Queue> listQueue = queueRepository.findUserQueueDetailByUsername(username);
+		
+//		QueueDto listQueueDto =  new QueueDto();
+//		System.out.println("This is a listQueue" + listQueue);
+		for (Queue i : listQueue) {
+			QueueDto listQueueDto =  new QueueDto();
+			System.out.println(i.getBusiness_name());
+			waitQueueList.put(i, findAllQueueWait(i.getBusiness_name(), username));
+			listQueueDto.setId(i.getId());
+			listQueueDto.setUsername(i.getUsername());
+			listQueueDto.setUser_email(i.getUser_email());
+			listQueueDto.setUser_detail(i.getUser_detail());
+			listQueueDto.setBook_time(i.getBook_time());
+			listQueueDto.setUser_telephone(i.getUser_telephone());
+			listQueueDto.setQueue_no(i.getQueue_no());
+			listQueueDto.setQueue_type(i.getQueue_type());
+			listQueueDto.setBusiness_detail_id(i.getBusiness_detail_id());
+			listQueueDto.setStatus(i.getStatus());
+			listQueueDto.setBusiness_name(i.getBusiness_name());
+			listQueueDto.setWait_left(findAllQueueWait(i.getBusiness_name(), username));
+			listQueueDto.setWait_time(waitTime(i.getBusiness_name(), username));
+			listQueueDto.setCurrent_queue(findCurentQueue(i.getBusiness_name()));
+			list.add(listQueueDto);
+		}
+//		list.put("listQueueDetail", listQueueDto);
+		System.out.println("this is a list " + list.toString());
+		result.put("listQueue", list);
+		
+        return result;
+    }
 }
 
