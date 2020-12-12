@@ -46,8 +46,8 @@ public class QueueController {
         return ResponseEntity.ok(new MessageResponse("ต่อคิวสำเร็จ"));
     }
 	
-	@PostMapping(value = "/queueByBusiness")
-    public ResponseEntity<?> postQueue(@RequestBody String business_name) {
+	@GetMapping(value = "/queueByBusiness")
+    public ResponseEntity<?> postQueue(@RequestParam("business_name") String business_name) {
 		List<Queue> result = queueService.findByBusinessName(business_name);
 		System.out.println(business_name);
 		System.out.println(result);
