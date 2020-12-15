@@ -147,5 +147,12 @@ public class QueueService {
 		
         return result;
     }
+	
+	public  Map<String, Object> findCurrentQueueDetail(String business_name) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		Integer currentQueueNo = queueRepository.findCurentQueue(business_name);
+		result.put("currentQueueDetail",  queueRepository.findCurentQueueDetailByQueueNo(currentQueueNo));
+        return result;
+    }
 }
 

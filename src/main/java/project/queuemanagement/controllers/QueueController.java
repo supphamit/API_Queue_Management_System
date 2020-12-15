@@ -119,4 +119,10 @@ public class QueueController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/findCurrentQueueDetail")
+	public ResponseEntity<?> findCurrentQueueDetail(@RequestParam("business_name") String business_name){
+		Map<String, Object> result = queueService.findCurrentQueueDetail(business_name);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
 }

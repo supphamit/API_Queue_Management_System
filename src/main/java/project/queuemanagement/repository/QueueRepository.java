@@ -19,7 +19,13 @@ public interface QueueRepository extends JpaRepository<Queue, Integer>{
 	
 	@Query("SELECT MIN(r.queue_no) FROM Queue r WHERE r.status = 'waiting' AND r.business_name = :business_name")
 	public Integer findCurentQueue(@Param("business_name") String business_name);	
-
+	
+	@Query("SELECT MIN(r.queue_no), r.username, r.status, r.user_detail FROM Queue r WHERE r.status = 'waiting' AND r.business_name = :business_name")
+	public List<Queue> findCurentQueueDetail(@Param("business_name") String business_name);
+	
+	@Query("SELECT r FROM Queue r WHERE r.queue_no = :queue_no")
+	public List<Queue> findCurentQueueDetailByQueueNo(@Param("queue_no") Integer queue_no);
+	
 	@Query("SELECT r FROM Queue r WHERE r.id = :id")
 	public List<Queue> findQueueStatus(@Param("id") Integer id);
 	
