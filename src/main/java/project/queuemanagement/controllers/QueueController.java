@@ -62,7 +62,7 @@ public class QueueController {
 //        return new ResponseEntity<>(result, HttpStatus.OK);
 //}
 	
-	
+	//ใช้ทำไรวะะะะะะะะะะะะ ??
 	@PostMapping(value = "/queueStatus")
     public ResponseEntity<?> queueSatus(@RequestBody Integer id) {
 		List<Queue> result = queueService.findQueueStatus(id);
@@ -120,6 +120,7 @@ public class QueueController {
 		return ResponseEntity.ok(new MessageResponse("เรียกคิวสำเร็จ"));
     }
 	
+	//done มั้ง
 	@GetMapping(value = "/checkQueueWithLoginUsername")
 	public ResponseEntity<?> checkQueueWithLoginUsername(@RequestParam("username") String username){
 		Map<String, Object> result = queueService.checkQueueWithLoginUsername(username);
