@@ -14,9 +14,11 @@ import project.queuemanagement.models.Queue;
 @Repository
 public interface QueueRepository extends JpaRepository<Queue, Integer>{
 	
+	//done
 	@Query("SELECT r FROM Queue r WHERE r.business_name = :business_name")
 	public List<Queue> findQueueByBusinessName(@Param("business_name") String business_name);
 	
+	//done
 	@Query("SELECT MIN(r.queue_no) FROM Queue r WHERE r.status = 'waiting' AND r.business_name = :business_name")
 	public Integer findCurentQueue(@Param("business_name") String business_name);	
 	
@@ -32,12 +34,15 @@ public interface QueueRepository extends JpaRepository<Queue, Integer>{
 	@Query("SELECT r FROM Queue r WHERE r.status = 'waiting' AND r.business_name = :business_name")
 	public List<Queue> findWatingQueueByBusiness(@Param("business_name") String business_name);
 	
+	//done
 	@Query("SELECT r FROM Queue r WHERE r.status = 'waiting' AND r.username = :username")
 	public List<Queue> findUserQueueDetailByUsername(@Param("username") String username);
 	
+	//done
 	@Query("SELECT r FROM Queue r WHERE r.status = 'waiting' AND r.username = ?1 AND r.business_name = ?2" )
 	public List<Queue> existsByUsername(String username, String business_name);
 	
+	//not test yet
 	@Modifying
 	@Transactional
 	@Query("UPDATE Queue SET status = 'cancel'  WHERE username = ?1 AND business_name = ?2" )

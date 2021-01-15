@@ -32,7 +32,7 @@ public class QueueController {
 	@Autowired
 	private QueueRepository queueRepository;
 	
-	
+	//done
 	@PostMapping(value = "/addQueue")
     public ResponseEntity<?> postQueue(@RequestBody Queue body) {
 		System.out.println(body.toString());
@@ -46,6 +46,7 @@ public class QueueController {
         return ResponseEntity.ok(new MessageResponse("ต่อคิวสำเร็จ"));
     }
 	
+	//done
 	@GetMapping(value = "/queueByBusiness")
     public ResponseEntity<?> postQueue(@RequestParam("business_name") String business_name) {
 		List<Queue> result = queueService.findByBusinessName(business_name);
@@ -61,6 +62,7 @@ public class QueueController {
 //        return new ResponseEntity<>(result, HttpStatus.OK);
 //}
 	
+	
 	@PostMapping(value = "/queueStatus")
     public ResponseEntity<?> queueSatus(@RequestBody Integer id) {
 		List<Queue> result = queueService.findQueueStatus(id);
@@ -68,6 +70,7 @@ public class QueueController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 	
+	//done
 	@GetMapping(value = "/queueStatusDetail")
     public ResponseEntity<Map<String, Object>> queueSatusDetail(@RequestParam("business_name") String business_name, @RequestParam("username") String username) {
 		Map<String, Object> result = queueService.findQueueStatusDetail(username, business_name);
@@ -75,6 +78,7 @@ public class QueueController {
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 	
+	//done
 	@GetMapping(value = "/listQueue")
     public ResponseEntity<?> queueSatus(@RequestParam("username") String username) {
 		System.out.println(username);
@@ -82,6 +86,7 @@ public class QueueController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 	
+	//done
 	@GetMapping(value = "/findWatingQueueByBusiness")
     public ResponseEntity<?> findWatingQueueByBusiness(@RequestParam("business_name") String business_name, @RequestParam("username") String username) {
 		System.out.println(business_name);
@@ -89,14 +94,15 @@ public class QueueController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 	
-	@GetMapping(value = "/cancelQueue")
-    public ResponseEntity<?> cancelQueue(@RequestParam("username") String username, @RequestParam("business_name") String business_name) {
-		queueService.cancelQueue(username, business_name);
-		System.out.println(username);
-		System.out.println(business_name);
-		return ResponseEntity.ok(new MessageResponse("ยกเลิกคิวสำเร็จ"));
-    }
+//	@GetMapping(value = "/cancelQueue")
+//    public ResponseEntity<?> cancelQueue(@RequestParam("username") String username, @RequestParam("business_name") String business_name) {
+//		queueService.cancelQueue(username, business_name);
+//		System.out.println(username);
+//		System.out.println(business_name);
+//		return ResponseEntity.ok(new MessageResponse("ยกเลิกคิวสำเร็จ"));
+//    }
 	
+	//done ---------------------------------------------------------------------------- แก้อัพเดตตามนี้
 	@PatchMapping(value = "/cancelQueue/{username}")
 	public ResponseEntity<?> cancelQueueByUser(@PathVariable(value = "username") String username, @Valid @RequestBody Queue body){
 		queueService.cancelQueue(username, body.getBusiness_name());
@@ -105,6 +111,7 @@ public class QueueController {
 		return ResponseEntity.ok(new MessageResponse("ยกเลิกคิวสำเร็จ"));
 	}
 	
+	//--------------------------- แก้ตาม ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	@GetMapping(value = "/acceptQueue")
     public ResponseEntity<?> acceptQueue(@RequestParam("username") String username, @RequestParam("business_name") String business_name) {
 		queueService.accpetQueue(username, business_name);
@@ -119,6 +126,7 @@ public class QueueController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
+	//done มั้ง
 	@GetMapping(value = "/findCurrentQueueDetail")
 	public ResponseEntity<?> findCurrentQueueDetail(@RequestParam("business_name") String business_name){
 		Map<String, Object> result = queueService.findCurrentQueueDetail(business_name);
